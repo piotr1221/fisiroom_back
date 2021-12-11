@@ -1,3 +1,4 @@
+import pymysql
 """
 Django settings for fisiroom project.
 
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-1owa7ry7^*l&42eq85e%j(ja+e)39*0f34g%^e(hknvqlt3_fz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'authy',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'fisiroom.urls'
@@ -74,11 +79,16 @@ WSGI_APPLICATION = 'fisiroom.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+pymysql.install_as_MySQLdb()
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'HOST': '127.0.0.1',
+    'PORT': '3306',
+    'NAME': 'fisi_room_db',
+    'USER': 'root',
+    'PASSWORD': 'root',
+  }
 }
 
 
@@ -124,3 +134,12 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ORIGIN_ALLOW_ALL = True
+STATIC_ROOT = 'static'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
