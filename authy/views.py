@@ -13,7 +13,7 @@ def login(req):
 
     username = body.get('username')
     password = body.get('password')
-    
+
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -23,4 +23,4 @@ def login(req):
         return Response(LOGIN_ERROR+' 2')
 
     token, _ = Token.objects.get_or_create(user=user)
-    return Response(token.key)
+    return Response({'token': token.key})
