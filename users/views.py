@@ -31,7 +31,6 @@ def login(req):
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
-    queryset = serializers.UserSerializer.Meta.model.objects.filter(is_active=1)
 
     def get_queryset(self, pk=None):
         if pk is None:
@@ -43,7 +42,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        serializer = serializers.UserSerializer(data=serializer.data)
+        serializer = self.serializer_class(data=serializer.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
