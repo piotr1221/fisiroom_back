@@ -15,7 +15,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 class Course(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     #picture = models.ImageField(upload_to=user_directory_path)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=300)
@@ -36,7 +36,7 @@ class Course(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
     enrolled = models.ManyToManyField(User)
     #modules = models.ManyToManyField(Module)
     #questions = models.ManyToManyField(Question)
@@ -44,3 +44,9 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    def get_day_of_the_week(self):
+        #raise Exception(self.DAY_CHOICES[int(self.day)][1])
+        return self.DAY_CHOICES[int(self.day)-1][1]
+
+    def get_owner_full_name(self):
+        return f'{self.owner.first_name} {self.owner.last_name}'

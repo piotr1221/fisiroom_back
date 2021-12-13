@@ -7,5 +7,5 @@ router.register(r'', views.UserViewSet, basename='users')
 
 urlpatterns = router.urls
 urlpatterns += [
-    path('login/', views.login)
+    path('login/', views.login),
 ]
