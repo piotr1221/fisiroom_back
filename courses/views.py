@@ -10,12 +10,12 @@ class CourseCreatedViewSet(viewsets.ModelViewSet):
     queryset = serializer_class.Meta.model.objects
 
     def list(self, req):
-        queryset = self.serializer_class.Meta.model.objects.filter(owner=req.user)
+        queryset = self.queryset.filter(owner=req.user)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, req, pk=None):
-        queryset = self.serializer_class.Meta.model.objects.filter(owner=req.user)
+        queryset = self.queryset.filter(owner=req.user)
         course = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(course)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -29,8 +29,15 @@ class CourseCreatedViewSet(viewsets.ModelViewSet):
 
 class CourseEnrolledViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CourseSerializer
+    queryset = serializer_class.Meta.model.objects
 
-    def get_queryset(self, pk=None):
-        if pk is None:
-            return self.serializer_class.Meta.model.objects.all()
-        return self.serializer_class.Meta.model.objects.filter(id=pk).first()
+    def list(self, req):
+        queryset = self.queryset.filter(enrolled=req.user)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def retrieve(self, req, pk=None):
+        queryset = self.queryset.filter(enrolled=req.user)
+        course = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(course)
+        return Response(serializer.data, status=status.HTTP_200_OK)

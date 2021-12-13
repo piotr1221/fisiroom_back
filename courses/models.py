@@ -37,7 +37,7 @@ class Course(models.Model):
     time_end = models.TimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
-    enrolled = models.ManyToManyField(User)
+    enrolled = models.ManyToManyField(User, related_name='courses')
     #modules = models.ManyToManyField(Module)
     #questions = models.ManyToManyField(Question)
 
