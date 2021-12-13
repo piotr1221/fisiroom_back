@@ -22,7 +22,7 @@ class CourseSerializer(serializers.ModelSerializer):
             'owner_name'
         ]
 
-    def validate(req, data):
+    def validate(self, data):
         data.setdefault('title', None)
         data.setdefault('description', None)
         data.setdefault('day', None)
