@@ -45,7 +45,6 @@ class Course(models.Model):
         return self.title
 
     def get_day_of_the_week(self):
-        #raise Exception(self.DAY_CHOICES[int(self.day)][1])
         return self.DAY_CHOICES[int(self.day)-1][1]
 
     def get_owner_full_name(self):

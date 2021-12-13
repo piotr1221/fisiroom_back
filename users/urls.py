@@ -6,6 +6,6 @@ router = DefaultRouter()
 router.register(r'', views.UserViewSet, basename='users')
 
 urlpatterns = router.urls
-urlpatterns += [
+'''urlpatterns += [
     path('login/', views.login),
-]
+]'''

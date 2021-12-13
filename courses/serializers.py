@@ -12,13 +12,29 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'category',
             'description',
+            'day',
             'day_of_the_week',
             'time_start',
             'time_end',
             'owner',
             'owner_name'
         ]
+
+    def validate(req, data):
+        data.setdefault('title', None)
+        data.setdefault('description', None)
+        data.setdefault('day', None)
+        data.setdefault('time_start', None)
+        data.setdefault('time_end', None)
+        data.setdefault('category', None)
+        data.setdefault('owner', None)
+        
+        if None in data.values():
+            raise serializers.ValidationError("Campos faltantes")
+
+        return data
 
     def get_day_of_the_week(self):
         return self.Meta.model.get_day_of_the_week()
