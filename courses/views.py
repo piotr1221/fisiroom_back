@@ -1,12 +1,12 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from . import serializers
 # Create your views here.
 
 class CourseCreatedViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.CourseSerializer
+    serializer_class = serializers.CourseListSerializer
     queryset = serializer_class.Meta.model.objects
 
     def list(self, req):
@@ -17,8 +17,7 @@ class CourseCreatedViewSet(viewsets.ModelViewSet):
     def retrieve(self, req, pk=None):
         queryset = self.queryset.filter(owner=req.user)
         course = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(course)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return redirect(course)
 
     def create(self, req):
         serializer = self.serializer_class(data=req.data)
@@ -28,7 +27,7 @@ class CourseCreatedViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class CourseEnrolledViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.CourseSerializer
+    serializer_class = serializers.CourseListSerializer
     queryset = serializer_class.Meta.model.objects
 
     def list(self, req):
@@ -39,5 +38,4 @@ class CourseEnrolledViewSet(viewsets.ModelViewSet):
     def retrieve(self, req, pk=None):
         queryset = self.queryset.filter(enrolled=req.user)
         course = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(course)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return redirect(course)

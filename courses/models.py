@@ -14,6 +14,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
 class Course(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     #picture = models.ImageField(upload_to=user_directory_path)
@@ -49,3 +50,6 @@ class Course(models.Model):
 
     def get_owner_full_name(self):
         return f'{self.owner.first_name} {self.owner.last_name}'
+
+    def get_absolute_url(self):
+        return f'/classroom/{self.pk}'
