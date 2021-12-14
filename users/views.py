@@ -34,15 +34,15 @@ class UserViewSet(viewsets.ModelViewSet):
         password = req.data.get('password', None)
 
         if email == None or password == None:
-            return Response(LOGIN_ERROR)
+            return Response(LOGIN_ERROR, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return Response(LOGIN_ERROR)
+            return Response(LOGIN_ERROR, status=status.HTTP_400_BAD_REQUEST)
 
         if not check_password(password, user.password):
-            return Response(LOGIN_ERROR)
+            return Response(LOGIN_ERROR, status=status.HTTP_400_BAD_REQUEST)
 
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key}, status=status.HTTP_201_CREATED)

@@ -33,7 +33,6 @@ class CourseSerializer(serializers.ModelSerializer):
         
         if None in data.values():
             raise serializers.ValidationError("Campos faltantes")
-
         return data
 
     def get_day_of_the_week(self):
