@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from . import models
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseListSerializer(serializers.ModelSerializer):
     day_of_the_week = serializers.CharField(read_only=True,
                                             source='get_day_of_the_week')
     owner_name = serializers.CharField(read_only=True,
