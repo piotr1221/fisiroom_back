@@ -6,7 +6,7 @@ from . import serializers
 # Create your views here.
 
 class CourseCreatedViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.CourseListSerializer
+    serializer_class = serializers.CourseCardSerializer
     queryset = serializer_class.Meta.model.objects
 
     def list(self, req):
@@ -27,7 +27,7 @@ class CourseCreatedViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class CourseEnrolledViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.CourseListSerializer
+    serializer_class = serializers.CourseCardSerializer
     queryset = serializer_class.Meta.model.objects
 
     def list(self, req):

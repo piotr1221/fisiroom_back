@@ -1,7 +1,8 @@
 from rest_framework import serializers
+import utilities.serializers as utl_serializers
 from . import models
 
-class CourseListSerializer(serializers.ModelSerializer):
+class CourseCardSerializer(utl_serializers.ExtraFieldsModelSerializer):
     day_of_the_week = serializers.CharField(read_only=True,
                                             source='get_day_of_the_week')
     owner_name = serializers.CharField(read_only=True,
@@ -9,16 +10,11 @@ class CourseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Course
-        fields = [
-            'id',
-            'title',
-            'category',
-            'description',
-            'day',
+        exclude = [
+            'enrolled',
+        ]
+        extra_fields = [
             'day_of_the_week',
-            'time_start',
-            'time_end',
-            'owner',
             'owner_name'
         ]
 
@@ -34,9 +30,3 @@ class CourseListSerializer(serializers.ModelSerializer):
         if None in data.values():
             raise serializers.ValidationError("Campos faltantes")
         return data
-
-    def get_day_of_the_week(self):
-        return self.Meta.model.get_day_of_the_week()
-
-    def get_owner_full_name(self):
-        return self.Meta.model.get_owner_full_name()

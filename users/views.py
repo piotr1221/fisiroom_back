@@ -1,30 +1,21 @@
 from rest_framework.decorators import action
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from django.contrib.auth.models import User
+from users.models import User
 from django.contrib.auth.hashers import check_password
 from . import serializers
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
-
-    def get_queryset(self, pk=None):
-        if pk is None:
-            return serializers.UserSerializer.Meta.model.objects.filter(is_active=1).all()
-        return serializers.UserSerializer.Meta.model.objects.filter(id=pk, is_active=1).first()
+    queryset = serializer_class.Meta.model.objects
 
     def create(self, req):
-        serializer = serializers.UserRegistrationSerializer(data=req.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        serializer = self.serializer_class(data=serializer.data)
+        serializer = self.serializer_class(data=req.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save()
-        return Response({'message': 'Usuario registrado con éxito'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['POST'])
     def login(self, req):
@@ -33,7 +24,7 @@ class UserViewSet(viewsets.ModelViewSet):
         email = req.data.get('email', None)
         password = req.data.get('password', None)
 
-        if email == None or password == None:
+        if email is None or password is None:
             return Response(LOGIN_ERROR, status=status.HTTP_400_BAD_REQUEST)
 
         try:
@@ -44,5 +35,5 @@ class UserViewSet(viewsets.ModelViewSet):
         if not check_password(password, user.password):
             return Response(LOGIN_ERROR, status=status.HTTP_400_BAD_REQUEST)
 
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        serializer = serializers.UserLoginSerializer(user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

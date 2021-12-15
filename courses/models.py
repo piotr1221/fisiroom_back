@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
+from users.models import User
 import uuid
 # Create your models here.
 
@@ -37,9 +37,8 @@ class Course(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
-    enrolled = models.ManyToManyField(User, related_name='courses')
-    #modules = models.ManyToManyField(Module)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_courses')
+    enrolled = models.ManyToManyField(User, related_name='enrolled_courses')
     #questions = models.ManyToManyField(Question)
 
     def __str__(self):
@@ -49,7 +48,7 @@ class Course(models.Model):
         return self.DAY_CHOICES[int(self.day)-1][1]
 
     def get_owner_full_name(self):
-        return f'{self.owner.first_name} {self.owner.last_name}'
+        return self.owner.get_full_name()
 
     def get_absolute_url(self):
         return f'/classroom/{self.pk}'
