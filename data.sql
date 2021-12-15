@@ -16,7 +16,7 @@ VALUES
 (3, 'Econometría', 'Análisis económico matemático', '3', '10:00:00', '15:00:00', 3, 1),
 (4, 'Álgebra Lineal', 'Manipulación de matrices y vectores', '7', '11:00:00', '16:00:00', 7, 1);
 
-INSERT INTO courses_course_enrolled (course_id, user_id)
-VALUES 
+-- INSERT INTO courses_course_enrolled (course_id, user_id)
+-- VALUES 
 -- El primer valor es el id del curso, el segundo valor el id del usuario estudiante a matricularse
-(1, 1);
+-- (2, 4);

@@ -2,7 +2,6 @@ from django.db import models
 from django.core import validators
 from users.models import User
 from courses.models import Course
-#from polymorphic.models import PolymorphicModel
 
 class Post(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='posts')
@@ -11,11 +10,11 @@ class Post(models.Model):
     creation_timestamp = models.DateTimeField(auto_now=True)
     #files
 
-class Assignment(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assignments')
-    title = models.CharField(max_length=200)
-    description = models.CharField(max_length=200, null=True, blank=True)
-    creation_timestamp = models.DateTimeField(auto_now=True)
+class Assignment(Post):
+    #course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assignments')
+    #title = models.CharField(max_length=200)
+    #description = models.CharField(max_length=200, null=True, blank=True)
+    #creation_timestamp = models.DateTimeField(auto_now=True)
     due_datetime = models.DateTimeField()
     #files
 
