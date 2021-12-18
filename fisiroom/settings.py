@@ -1,4 +1,5 @@
 import pymysql
+import os
 """
 Django settings for fisiroom project.
 
@@ -24,10 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1owa7ry7^*l&42eq85e%j(ja+e)39*0f34g%^e(hknvqlt3_fz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not os.getenv('GAE_APPLICATION', None)
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'courses',
+    'classroom',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,16 +84,27 @@ WSGI_APPLICATION = 'fisiroom.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 pymysql.install_as_MySQLdb()
-DATABASES = {
+if os.getenv('GAE_APPLICATION', None):
+  DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'HOST': '/cloudsql/linen-works-328605:us-central1:fisi-room',
+    'NAME': 'fisi_room_db',
+    'USER': 'fisi-room-user',
+    'PASSWORD': 'fisi-room-user',
+    }
+  }
+else:
+  DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.mysql',
     'HOST': '127.0.0.1',
     'PORT': '3306',
     'NAME': 'fisi_room_db',
-    'USER': 'root',
-    'PASSWORD': 'root',
+    'USER': 'fisi-room-user',
+    'PASSWORD': 'fisi-room-user',
+    }
   }
-}
 
 
 # Password validation

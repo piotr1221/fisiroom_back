@@ -1,18 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
+from users.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = [
-            'email',
-            'password',
-            'username',
-            'first_name',
-            'last_name'
-        ]
+        fields = '__all__'
 
     def create(self, data):
         data['password'] = make_password(data['password'])
@@ -22,14 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
         if duplicates:
             username += str(len(duplicates))
         data['username'] = username
+        data.pop('confirm_password')
         return super(UserSerializer, self).create(data)
-
-class UserRegistrationSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    password = serializers.CharField()
-    confirm_password = serializers.CharField()
 
     def validate_email(self, email):
         existing = User.objects.filter(email=email).first()
@@ -38,8 +28,23 @@ class UserRegistrationSerializer(serializers.Serializer):
         return email
 
     def validate(self, data):
-        if not data['password'] or not data['confirm_password']:
-            raise serializers.ValidationError("Ingrese su contraseña y su confirmación")
+        data.setdefault('first_name', None)
+        data.setdefault('last_name', None)
+        data.setdefault('password', None)
+        data.setdefault('confirm_password', None)
+
+        if None in data.values():
+            raise serializers.ValidationError("Faltan datos para el registro")
+
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError("Las contraseñas no coinciden")
         return data
+
+class UserLoginSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(read_only=True,
+                                source='get_user_token')
+    class Meta:
+        model = User
+        exclude = [
+            'password',
+        ]
