@@ -11,10 +11,6 @@ class Post(models.Model):
     #files
 
 class Assignment(Post):
-    #course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='assignments')
-    #title = models.CharField(max_length=200)
-    #description = models.CharField(max_length=200, null=True, blank=True)
-    #creation_timestamp = models.DateTimeField(auto_now=True)
     due_datetime = models.DateTimeField()
     #files
 
