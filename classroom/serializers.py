@@ -34,7 +34,6 @@ class ClassroomCourseSerializer(CourseCardSerializer):
 
     def validate(self, data):
         data.setdefault('title', None)
-        data.setdefault('description', None)
         data.setdefault('day', None)
         data.setdefault('time_start', None)
         data.setdefault('time_end', None)
