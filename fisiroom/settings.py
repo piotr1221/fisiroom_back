@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1owa7ry7^*l&42eq85e%j(ja+e)39*0f34g%^e(hknvqlt3_fz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not os.getenv('GAE_APPLICATION', None)
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,26 +84,14 @@ WSGI_APPLICATION = 'fisiroom.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 pymysql.install_as_MySQLdb()
-if os.getenv('GAE_APPLICATION', None):
-  DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'HOST': '/cloudsql/linen-works-328605:us-central1:fisi-room',
-    'NAME': 'fisi_room_db',
-    'USER': 'fisi-room-user',
-    'PASSWORD': 'fisi-room-user',
-    }
-  }
-else:
-  DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'HOST': '127.0.0.1',
-    'PORT': '3306',
-    'NAME': 'fisi_room_db',
-    'USER': 'fisi-room-user',
-    'PASSWORD': 'fisi-room-user',
-    }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '/cloudsql/linen-works-328605:us-central1:fisi-room',
+        'NAME': 'fisi_room_db',
+        'USER': 'fisi-room-user',
+        'PASSWORD': 'fisi-room-user',
+        }
   }
 
 
