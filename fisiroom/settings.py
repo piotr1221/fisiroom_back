@@ -87,7 +87,8 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '/cloudsql/linen-works-328605:us-central1:fisi-room',
+        'HOST': '34.135.227.179',
+        'PORT': '3306',
         'NAME': 'fisi_room_db',
         'USER': 'fisi-room-user',
         'PASSWORD': 'fisi-room-user',
@@ -146,3 +147,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'fisi-room-bucket'
