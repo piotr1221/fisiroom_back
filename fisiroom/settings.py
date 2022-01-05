@@ -87,7 +87,7 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '34.135.227.179',
+        'HOST': '104.154.153.209',
         'PORT': '3306',
         'NAME': 'fisi_room_db',
         'USER': 'fisi-room-user',
