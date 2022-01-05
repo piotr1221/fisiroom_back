@@ -4,20 +4,13 @@ from users.models import User
 import uuid
 # Create your models here.
 
-# class Category(models.Model):
-#     title = models.CharField(max_length=100, verbose_name='Title')
-#     icon = models.CharField(max_length=100, verbose_name='Icon', default='article')
-#     slug = models.SlugField(unique=True)
-
-#     def get_absolute_url(self):
-#         return reverse('categories', arg=[self.slug])
-
-#     def __str__(self):
-#         return self.title
-
+def course_storage_path(instance, filename):
+    filename = 'portada.jpg'
+    id = len(Course.objects.all()) + 1
+    return f'courses/{id}/{filename}'
 class Course(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    #picture = models.ImageField(upload_to=user_directory_path)
+    image = models.FileField(upload_to=course_storage_path, null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=300, null=True, blank=True)
     DAY_CHOICES = [
@@ -36,10 +29,8 @@ class Course(models.Model):
     )
     time_start = models.TimeField()
     time_end = models.TimeField()
-    #category = models.ForeignKey(Category, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_courses')
     enrolled = models.ManyToManyField(User, related_name='enrolled_courses')
-    #questions = models.ManyToManyField(Question)
 
     def __str__(self):
         return self.title
@@ -52,3 +43,6 @@ class Course(models.Model):
 
     def get_absolute_url(self):
         return f'/classroom/{self.pk}'
+
+    def get_storage_path(self):
+        return f'courses/{self.pk}'
