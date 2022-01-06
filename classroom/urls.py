@@ -1,7 +1,19 @@
+from django.urls import path, include
+
 from rest_framework.routers import SimpleRouter
 from . import views
 
-router = SimpleRouter()
-router.register(r'', views.ClassroomCourseViewSet, basename='classroom')
+main_router = SimpleRouter()
+main_router.register(r'', views.ClassroomCourseViewSet, basename='classroom')
 
-urlpatterns = router.urls
+assignment_router = SimpleRouter()
+assignment_router.register(r'assignments', views.ClassroomAssignmentViewSet, basename='assignments')
+
+homework_router = SimpleRouter()
+homework_router.register(r'submit', views.ClassroomHomeworkViewSet, basename='homework')
+
+urlpatterns = [
+    path('', include(main_router.urls)),
+    path('<int:course_id>/', include(assignment_router.urls)),
+    path('<int:course_id>/assignments/<int:assign_id>/', include(homework_router.urls))
+]       
