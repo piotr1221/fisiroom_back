@@ -6,17 +6,45 @@ import time
 from users.models import User
 from . import models
 
-class ClassroomHomeworkSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Homework
-        fields = '__all__'
-
 class ClassroomPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Post
         fields = '__all__'
+
+class ClassroomHomeworkSerializer(serializers.ModelSerializer):
+    assignment = serializers.IntegerField(source='assignment.id', required=False)
+    student = serializers.CharField(source='student.id', required=False)
+
+    class Meta:
+        model = models.Homework
+        fields = '__all__'
+
+    def create(self, data):
+        data['assignment'] = self.context['assignment']
+        data['student'] = self.context['student']
+        return super(ClassroomHomeworkSerializer, self).create(data)
+
+
+class ClassroomAssignmentSerializer(serializers.ModelSerializer):
+    course = serializers.CharField(source='course.id', required=False)
+
+    class Meta:
+        model = models.Assignment
+        fields = '__all__'
+
+    def create(self, data):
+        data['course'] = self.context['course']
+        return super(ClassroomAssignmentSerializer, self).create(data)
+
+    def validate(self, data):
+        data.setdefault('title', None)
+        data.setdefault('due_datetime', None)
+
+        if None in data.values():
+            raise serializers.ValidationError("Faltan datos para el registro")
+        
+        return data
 
 
 class ClassroomCourseSerializer(CourseCardSerializer):

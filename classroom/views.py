@@ -1,9 +1,53 @@
+from decimal import Context
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from django.db.models import Q
+from classroom.models import Assignment
+
+from courses.models import Course
 from . import serializers
+
+
+class ClassroomHomeworkViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ClassroomHomeworkSerializer
+    queryset = serializer_class.Meta.model.objects
+    http_method_names = ["post"]
+
+    def create(self, req, course_id=None, assign_id=None):  
+        queryset_courses = Course.objects.filter()
+        course = get_object_or_404(queryset_courses, pk=course_id)
+        queryset_assigns = Assignment.objects.filter(course=course)
+        assignment = get_object_or_404(queryset_assigns, pk=assign_id)
+
+        serializer = self.serializer_class(data=req.data, context={'assignment': assignment, 'student': req.user})
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ClassroomAssignmentSerializer
+    queryset = serializer_class.Meta.model.objects
+
+    def create(self, req, course_id=None):  
+        queryset_courses = Course.objects.filter()
+        course = get_object_or_404(queryset_courses, pk=course_id)
+        serializer = self.serializer_class(data=req.data, context={'course': course})
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def retrieve(self, req, pk=None, course_id=None):
+        queryset = self.queryset.filter()
+        classroom_assignment = get_object_or_404(queryset, pk=pk, course=course_id)
+        serializer = self.serializer_class(classroom_assignment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomCourseSerializer
     queryset = serializer_class.Meta.model.objects
