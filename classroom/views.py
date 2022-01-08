@@ -13,7 +13,7 @@ from . import serializers
 class ClassroomHomeworkViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomHomeworkSerializer
     queryset = serializer_class.Meta.model.objects
-    http_method_names = ["post"]
+    http_method_names = ["post", "put"]
 
     def create(self, req, course_id=None, assign_id=None):  
         queryset_courses = Course.objects.filter()
@@ -26,6 +26,19 @@ class ClassroomHomeworkViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def update(self, req, pk=None, course_id=None, assign_id=None):
+        queryset = self.queryset.filter()
+        homework = get_object_or_404(queryset, pk=pk, assignment=assign_id)
+        homework.grade = req.data.get("grade")
+        homework.save()
+
+        serializer = self.serializer_class(homework, data = req.data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        self.perform_update(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
