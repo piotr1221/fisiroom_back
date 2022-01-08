@@ -7,10 +7,31 @@ from users.models import User
 from . import models
 
 class ClassroomPostSerializer(serializers.ModelSerializer):
+    course = serializers.CharField(source='course.id', required=False)
 
     class Meta:
         model = models.Post
         fields = '__all__'
+
+    def validate(self, data):
+        data.setdefault('title', None)
+
+        if None in data.values():
+            raise serializers.ValidationError("Faltan datos para el registro")
+        
+        return data
+
+    def create(self, validated_data):
+        validated_data['course'] = self.context['course']
+        return super(ClassroomPostSerializer, self).create(validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title',instance.title)
+        instance.description = validated_data.get('description',instance.description)
+        instance.save()
+        return instance
+
+
 
 class ClassroomHomeworkSerializer(serializers.ModelSerializer):
     assignment = serializers.IntegerField(source='assignment.id', required=False)

@@ -1,4 +1,5 @@
 from decimal import Context
+from os import stat
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
@@ -77,3 +78,40 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         classroom_course = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(classroom_course)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ClassroomPostViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ClassroomPostSerializer
+    queryset = serializer_class.Meta.model.objects
+
+    def create(self, req, course_id=None):  
+        queryset_courses = Course.objects.filter()
+        course = get_object_or_404(queryset_courses, pk=course_id)
+        serializer = self.serializer_class(data=req.data, context={'course': course})
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def retrieve(self, req, pk=None, course_id=None):
+        queryset = self.queryset.filter()
+        classroom_post = get_object_or_404(queryset, pk=pk, course=course_id)
+        serializer = self.serializer_class(classroom_post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, pk=None, course_id=None):
+        queryset = self.queryset.filter()
+        classroom_post = get_object_or_404(queryset, pk=pk, course = course_id)
+        serializer = self.serializer_class(classroom_post, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def destroy(self, request, pk=None, course_id=None):
+        queryset = self.queryset.filter()
+        classroom_post = get_object_or_404(queryset, pk=pk, course = course_id)
+        if classroom_post:
+            super().destroy(request)
+            return Response({'message': 'Post borrado exitosamente'}, status = status.HTTP_200_OK)
+        return Response({'message': 'No existe un post con esos datos'}, status = status.HTTP_400_BAD_REQUEST)
