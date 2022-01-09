@@ -60,7 +60,13 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
         classroom_assignment = get_object_or_404(queryset, pk=pk, course=course_id)
         serializer = self.serializer_class(classroom_assignment)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+    def list(self, req, pk=None, course_id=None):
+        queryset = self.queryset.filter(course=course_id)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomCourseSerializer
@@ -97,6 +103,11 @@ class ClassroomPostViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter()
         classroom_post = get_object_or_404(queryset, pk=pk, course=course_id)
         serializer = self.serializer_class(classroom_post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def list(self, req, pk=None, course_id=None):
+        queryset = self.queryset.filter(course=course_id)
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None, course_id=None):
