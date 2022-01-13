@@ -79,6 +79,7 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
 
     def create(self, data):
         data['owner'] = self.context['owner']
+        print(data)
         #data['image'] = self.context['image']
         return super(ClassroomCourseSerializer, self).create(data)
 

@@ -77,7 +77,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
     parser_classes = (FormParser, MultiPartParser)
 
     def create(self, req):
-        print(req.data)
+        #print(req.data)
         serializer = self.serializer_class(data=req.data, context={'owner': req.user})
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -86,7 +86,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         serializer.save(
             image=ImageFile(req.data.get('photo'))
         )
-        print(serializer.data)
+        #print(serializer.data)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
