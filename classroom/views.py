@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from django.db.models import Q
 from classroom.models import Assignment
+from rest_framework.parsers import MultiPartParser
 
 from courses.models import Course
 from . import serializers
@@ -71,15 +72,15 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomCourseSerializer
     queryset = serializer_class.Meta.model.objects
+    parser_classes = (MultiPartParser, )
 
     def create(self, req):
         serializer = self.serializer_class(data=req.data, context={'owner': req.user})
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        #print(serializer.data)
         serializer.save()
-        print('ra')
+        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, req, pk=None):
