@@ -74,7 +74,7 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomCourseSerializer
     queryset = serializer_class.Meta.model.objects
-    parser_classes = [FormParser, MultiPartParser]
+    parser_classes = (FormParser, MultiPartParser)
 
     def create(self, req):
         print(req.data)
