@@ -77,9 +77,9 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        print(serializer.data)
+        #print(serializer.data)
         serializer.save()
-        print(serializer.data)
+        print('ra')
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, req, pk=None):
