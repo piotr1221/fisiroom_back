@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fisi-room-budget",
+  "private_key_id": "341686f2df75ed4327da1c04cf3190ab257b1fbe",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7yX4/fqib+QSn\nMmDakm9LStEB8r9u01n66HlA+KPaXnXWqEv6BqM2hIgKphHrGtYP+V5Qwzrrgn4W\nAc18TS4kd9z07Q59SroCLiawhBWCagJ2dpFhtFX67nb8jfNnBwtucNou0y4MyG6s\n3OV128g3QC4Pgz/MT865QQX2uh79z9gHahPJmQW2bD71kSJWNcT9DKVxLi4BaN0T\njGgWi0H1ZQK/u4r9m9g2oiWA368bnKypvfySiQ+E0RBDrEfz4aJErvejt13eNdm1\nAqZR8vWvtGuNVVoacmK489Kl2YcLdy4VKiNSpZYqevFIlUH8GpNZN68CirawWODV\n8kVuzdgZAgMBAAECggEAEA2dE8t9mXvTuIFXg0fiaMLYFD0OvWgm+IqYFwRKaZgK\npdOUTybzG+1/fb2NqZYNN6dfNzNBXbG1mqcDzH0ClU6D3pJHW1GgjiAo4Y0hE5mB\nZWQkcIBMm1t4Y4W1CZkyEnpmRHt8I86cm310xjsIJiT/6waS1SH7b53N5zYpARR2\nbskTT9qIwfcPLZaV8Si76RgDyoSt1h+Uvto3j6p3j4zngbf7oMQiUs+wrQLKMCe6\nBV22F9rVOmAUyBhzbgdTx5vetfdS1RJ2cT4OUlsrlwJEo72Tai0oLXsTNECvkUF2\nJh/hpFk9kKQs2CNF9sRQ8u5bHbFwq4Ro8vNOeDIAwQKBgQDtDRq2ZyWdQ+3lqtw3\n7Ok0Ei9R5ag25+/6jwNrHDTpS/Cz4QfnM1D7OV/zlSdXKj2VS8Xff/ovltpQzQjJ\n94RTmoUPorQ/yKM/8QhmSV6Ovynvf+1SujEKGxidVsv8v+FEp8mj+Lc/+XixnNLu\n+CI8AvRKve3We0uOgBQYkSI8aQKBgQDKzEXm1cQwkEtZDn4yI7jbf2s2DFAZSZ1P\nEQunYDALZIyu49e+tyJ9FI/UWnX2zNfUTpr9xOebxIFgQIyfBf6AUGQmv8hXb1Mn\nbhiQqhXJbLKesBzJZ0/KxslVXvWa1tBEbDXaVxSb+K4apQOMMxcst1Nzb6dkQ7dT\nx/oHgtUIMQKBgCYXW/qBep7ZwomMOhTWgea3IVl0oOIpxPsrLe5xOuNeK5CMEXwK\nV/H2lz+J8Sdlhz3NTj+KzgYFpJElUUs69c2FX+pSR8qUD/9/WM0u7v3bI/7zPIx1\nlNm93uexgdfccXNZzuIFXlTuXoGT5KU3xDCGfQDhoi075LlCRXhpIeo5AoGAXaL8\nE51YPOQjJjee5R/BVvf6VLZStZpb3AoOy3WKOXhvzMC++PwuHHrF/lLWbOIgNZMl\n1U55cl7FLeAgDb0CydRUqd+bbWOljWs0RHeEH8DkqIjAge4F1ab7h0OVO6079JvS\nMcJLbcjg+sR+YtmkNa1gBsjjDVSG7VREiftKycECgYEA4T21sljDeG8QCtNCvxGC\nfnAh6E2g41ZniORNFq5xwD0lm4foxBEM4oTgLbotxiqi7gPA/jrflQu/VNUXFhJ1\n2h/3P9eBx5GbrnADaJydVoLQ7HdMvrg/zGemueYjkm0yM5s0GDUqSkOxWp0wfj0w\n8b3KaR8MBIfJNPuoLUIY6WA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bucket-fisi-room@fisi-room-budget.iam.gserviceaccount.com",
+  "client_id": "111046337609255308815",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bucket-fisi-room%40fisi-room-budget.iam.gserviceaccount.com"
+}
