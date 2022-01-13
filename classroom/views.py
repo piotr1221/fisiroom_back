@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from django.db.models import Q
 from classroom.models import Assignment
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from courses.models import Course
 from . import serializers
@@ -72,7 +72,7 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomCourseSerializer
     queryset = serializer_class.Meta.model.objects
-    parser_classes = (MultiPartParser, )
+    parser_classes = (FormParser, MultiPartParser)
 
     def create(self, req):
         serializer = self.serializer_class(data=req.data, context={'owner': req.user})
