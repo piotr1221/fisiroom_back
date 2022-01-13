@@ -81,7 +81,9 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
-        serializer.save()
+        serializer.save(
+            image=req.data.get('photo')
+        )
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

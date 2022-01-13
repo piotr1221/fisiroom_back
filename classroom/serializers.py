@@ -73,13 +73,13 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
     enrolled = UserSerializer(many=True, read_only=True)
     posts = ClassroomPostSerializer(many=True, read_only=True)
     owner = serializers.CharField(source='owner.id', required=False)
-    image = serializers.FileField()
     class Meta:
         model = Course
         fields = '__all__'
 
     def create(self, data):
         data['owner'] = self.context['owner']
+        #data['image'] = self.context['image']
         return super(ClassroomCourseSerializer, self).create(data)
 
     def validate(self, data):
