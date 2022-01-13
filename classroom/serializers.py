@@ -5,6 +5,7 @@ from users.serializers import UserSerializer
 import time
 from users.models import User
 from . import models
+from rest_framework.response import Response
 
 class ClassroomPostSerializer(serializers.ModelSerializer):
     course = serializers.CharField(source='course.id', required=False)
@@ -79,7 +80,8 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
 
     def create(self, data):
         data['owner'] = self.context['owner']
-        return super(ClassroomCourseSerializer, self).create(data)
+        
+        #return super(ClassroomCourseSerializer, self).create(data)
 
     def validate(self, data):
         data.setdefault('title', None)
