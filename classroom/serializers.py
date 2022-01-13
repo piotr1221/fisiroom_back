@@ -80,8 +80,7 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
 
     def create(self, data):
         data['owner'] = self.context['owner']
-        
-        #return super(ClassroomCourseSerializer, self).create(data)
+        return super(ClassroomCourseSerializer, self).create(data)
 
     def validate(self, data):
         data.setdefault('title', None)

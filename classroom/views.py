@@ -79,7 +79,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         
         print(serializer.data)
         serializer.save()
-        
+        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, req, pk=None):
