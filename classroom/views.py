@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from django.db.models import Q
 from classroom.models import Assignment
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.core.files import File
 from courses.models import Course
 from . import serializers
 
@@ -82,7 +82,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         
         
         serializer.save(
-            image=req.data.get('photo')
+            image=File(req.data.get('photo'))
         )
         print(serializer.data)
         
