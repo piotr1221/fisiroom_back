@@ -40,6 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Las contraseñas no coinciden")
         return data
 
+
 class UserLoginSerializer(serializers.ModelSerializer):
     token = serializers.CharField(read_only=True,
                                 source='get_user_token')
@@ -48,3 +49,25 @@ class UserLoginSerializer(serializers.ModelSerializer):
         exclude = [
             'password',
         ]
+
+
+class UserGradeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = User
+        fields = [
+            'grade'
+        ]
+
+    def update(self, instance, validated_data):
+        instance.grade = validated_data.get('grade',instance.grade)
+        instance.save()
+        return instance
+
+    def validate(self, data):
+        data.setdefault('grade', None)
+
+        if None in data.values():
+            raise serializers.ValidationError("Faltan datos para actualizar la nota")
+
+        return data
