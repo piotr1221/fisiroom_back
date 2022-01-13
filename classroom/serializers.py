@@ -68,11 +68,11 @@ class ClassroomAssignmentSerializer(serializers.ModelSerializer):
         return data
 
 
-class ClassroomCourseSerializer(CourseCardSerializer):
+class ClassroomCourseSerializer(serializers.ModelSerializer):
     enrolled = UserSerializer(many=True, read_only=True)
     posts = ClassroomPostSerializer(many=True, read_only=True)
     owner = serializers.CharField(source='owner.id', required=False)
-
+    image = serializers.FileField()
     class Meta:
         model = Course
         fields = '__all__'
