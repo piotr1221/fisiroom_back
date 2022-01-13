@@ -74,7 +74,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
 
     def create(self, req):
         serializer = self.serializer_class(data=req.data, context={'owner': req.user})
-        return Response(req.files.get('image'))
+        return Response(req.FILES.get('image'))
         # if not serializer.is_valid():
         #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # serializer.save()
