@@ -1,7 +1,10 @@
 from rest_framework.routers import SimpleRouter
 from . import views
+from django.urls import path, include
 
-router = SimpleRouter()
-router.register(r'', views.UserViewSet, basename='users')
+main_router = SimpleRouter()
+main_router.register(r'', views.UserViewSet, basename='users')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(main_router.urls))
+]    

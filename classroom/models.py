@@ -33,7 +33,8 @@ class Homework(models.Model):
         validators=[
             validators.MaxValueValidator(20),
             validators.MinValueValidator(0)
-        ]
+        ],
+        default = 0
     )
     file = models.FileField(upload_to=homework_storage_path, null=True, blank=True)
     # weight

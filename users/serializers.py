@@ -40,6 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Las contraseñas no coinciden")
         return data
 
+
 class UserLoginSerializer(serializers.ModelSerializer):
     token = serializers.CharField(read_only=True,
                                 source='get_user_token')
