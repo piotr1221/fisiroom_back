@@ -49,25 +49,3 @@ class UserLoginSerializer(serializers.ModelSerializer):
         exclude = [
             'password',
         ]
-
-
-class UserGradeSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = User
-        fields = [
-            'grade'
-        ]
-
-    def update(self, instance, validated_data):
-        instance.grade = validated_data.get('grade',instance.grade)
-        instance.save()
-        return instance
-
-    def validate(self, data):
-        data.setdefault('grade', None)
-
-        if None in data.values():
-            raise serializers.ValidationError("Faltan datos para actualizar la nota")
-
-        return data

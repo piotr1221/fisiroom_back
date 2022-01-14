@@ -38,17 +38,3 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = serializers.UserLoginSerializer(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class UserGradeViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.UserGradeSerializer
-    queryset = serializer_class.Meta.model.objects
-
-    def update(self, request, pk=None):
-        queryset = self.queryset.filter()
-        student = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(student, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

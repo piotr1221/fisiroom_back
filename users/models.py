@@ -11,13 +11,6 @@ class User(AbstractUser):
         ],
         default = 0
     )
-    grade = models.IntegerField(
-        validators=[
-            validators.MaxValueValidator(20),
-            validators.MinValueValidator(0)
-        ],
-        default = 0
-    )
     
     def get_user_token(self):
         token, _ = Token.objects.get_or_create(user=self)
