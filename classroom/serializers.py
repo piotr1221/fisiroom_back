@@ -78,9 +78,11 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, data):
-        course = self.Meta.model.create(
+        course = self.Meta.model(
             **data
         )
+        course.save()
+        print('ra')
         return course
         #data['owner'] = self.context['owner']
         #data['image'] = self.context['image']
