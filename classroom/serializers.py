@@ -78,9 +78,14 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, data):
-        data['owner'] = self.context['owner']
+        course = self.Meta.model(
+            **data
+        )
+        print(course)
+        return course
+        #data['owner'] = self.context['owner']
         #data['image'] = self.context['image']
-        return super(ClassroomCourseSerializer, self).create(data)
+        #return super(ClassroomCourseSerializer, self).create(data)
 
     def validate(self, data):
         data.setdefault('title', None)
