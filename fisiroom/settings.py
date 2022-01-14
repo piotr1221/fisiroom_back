@@ -1,5 +1,6 @@
 import pymysql
 import os
+from pathlib import Path
 """
 Django settings for fisiroom project.
 
@@ -148,5 +149,10 @@ REST_FRAMEWORK = {
     ],
 }
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'fisi-room-bucket'
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+#GS_BUCKET_NAME = 'fisi-room-bucket'
