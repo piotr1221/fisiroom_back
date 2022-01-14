@@ -79,11 +79,16 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
 
     def create(self, data):
         course = self.Meta.model(
-            **data
+            title=data['title'],
+            description=data['description'],
+            day=data['day'],
+            time_start=data['time_start'],
+            time_end=data['time_end'],
+            image=data['image'].file
         )
-        print('ra')
+        print(course.image)
         course.save()
-        print('ra')
+        print(course.image)
         return course
         #data['owner'] = self.context['owner']
         #data['image'] = self.context['image']
