@@ -100,7 +100,6 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         data.setdefault('day', None)
         data.setdefault('time_start', None)
         data.setdefault('time_end', None)
-        data.setdefault('image', None)
 
         # print('getvalue', type(data.get('image').file.getvalue()))
         # print('file', type(data.get('image').file))
