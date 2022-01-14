@@ -84,9 +84,9 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         
         
         serializer.save(
-            image=req.data.get('photo')
+            image=req.data.get('photo').file.getvalue()
         )
-        #print(serializer.data)
+        print(serializer.data)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
