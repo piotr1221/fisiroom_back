@@ -84,7 +84,7 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
             day=data['day'],
             time_start=data['time_start'],
             time_end=data['time_end'],
-            image=data['image'].file
+            image=data['image']
         )
         print(course.image)
         course.save()
