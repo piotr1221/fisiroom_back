@@ -83,7 +83,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         
         
         serializer.save()
-        print(serializer.instace)
+        print('serializer.instace', serializer.instance)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
