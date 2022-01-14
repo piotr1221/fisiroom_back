@@ -78,10 +78,9 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, data):
-        course = self.Meta.model(
+        course = self.Meta.model.create(
             **data
         )
-        print(course.image)
         return course
         #data['owner'] = self.context['owner']
         #data['image'] = self.context['image']
@@ -94,8 +93,8 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         data.setdefault('time_end', None)
         data.setdefault('image', None)
 
-        print('getvalue', type(data.get('image').file.getvalue()))
-        print('file', type(data.get('image').file))
+        # print('getvalue', type(data.get('image').file.getvalue()))
+        # print('file', type(data.get('image').file))
 
         if None in data.values():
             return serializers.ValidationError("Faltan datos para el registro")
