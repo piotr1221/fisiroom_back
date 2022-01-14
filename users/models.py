@@ -11,6 +11,20 @@ class User(AbstractUser):
         ],
         default = 0
     )
+    fontsize = models.IntegerField(
+        validators=[
+            validators.MinValueValidator(12),
+            validators.MaxValueValidator(32)
+        ],
+        default = 16
+    )
+    cursorsize = models.IntegerField(
+        validators=[
+            validators.MinValueValidator(0),
+            validators.MaxValueValidator(2)
+        ],
+        default = 0
+    )
     
     def get_user_token(self):
         token, _ = Token.objects.get_or_create(user=self)
