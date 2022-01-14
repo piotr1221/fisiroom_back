@@ -77,14 +77,13 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
     parser_classes = (FormParser, MultiPartParser)
 
     def create(self, req):
-        #print(req.data)
         serializer = self.serializer_class(data=req.data, context={'owner': req.user})
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
         serializer.save()
-        print(serializer.data)
+        print(serializer.instace)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
