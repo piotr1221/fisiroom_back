@@ -81,7 +81,7 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         course = self.Meta.model(
             **data
         )
-        print(course)
+        print(course.image)
         return course
         #data['owner'] = self.context['owner']
         #data['image'] = self.context['image']
