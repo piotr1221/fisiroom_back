@@ -89,7 +89,8 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
         data.setdefault('time_start', None)
         data.setdefault('time_end', None)
         data.setdefault('image', None)
-        print(type(data.get('image')))
+        print(type(data.get('image').file))
+        print(data.get('image').file)
 
         if None in data.values():
             return serializers.ValidationError("Faltan datos para el registro")

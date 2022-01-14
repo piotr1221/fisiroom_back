@@ -84,7 +84,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         
         
         serializer.save(
-            image=ImageFile(req.data.get('photo'))
+            image=req.data.get('photo')
         )
         #print(serializer.data)
         
