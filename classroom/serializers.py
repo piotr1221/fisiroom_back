@@ -69,7 +69,7 @@ class ClassroomAssignmentSerializer(serializers.ModelSerializer):
         return data
 
 
-class ClassroomCourseSerializer(serializers.ModelSerializer):
+class ClassroomCourseSerializer(CourseCardSerializer):
     enrolled = UserSerializer(many=True, read_only=True)
     posts = ClassroomPostSerializer(many=True, read_only=True)
     owner = serializers.CharField(source='owner.id', required=False)
@@ -87,22 +87,14 @@ class ClassroomCourseSerializer(serializers.ModelSerializer):
             time_end=data['time_end'],
             image=data['image']
         )
-        print(course.image)
         course.save()
-        print(course.image)
         return course
-        #data['owner'] = self.context['owner']
-        #data['image'] = self.context['image']
-        #return super(ClassroomCourseSerializer, self).create(data)
 
     def validate(self, data):
         data.setdefault('title', None)
         data.setdefault('day', None)
         data.setdefault('time_start', None)
         data.setdefault('time_end', None)
-
-        # print('getvalue', type(data.get('image').file.getvalue()))
-        # print('file', type(data.get('image').file))
 
         if None in data.values():
             return serializers.ValidationError("Faltan datos para el registro")
