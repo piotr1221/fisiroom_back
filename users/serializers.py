@@ -49,3 +49,28 @@ class UserLoginSerializer(serializers.ModelSerializer):
         exclude = [
             'password',
         ]
+
+class UserConfigSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(read_only=True,
+                              source='get_user_token')
+    class Meta:
+        model = User
+        fields = [
+            'id','visual_config','fontsize','cursorsize'
+        ]
+
+    def update(self, instance, validated_data):
+        instance.visual_config = validated_data.get('visual_config',instance.visual_config)
+        instance.fontsize = validated_data.get('fontsize',instance.fontsize)
+        instance.cursorsize = validated_data.get('cursorsize',instance.cursorsize)
+        instance.save()
+        return instance
+    
+    def validate(self, data):
+        data.setdefault('visual_config', None)
+        data.setdefault('fontsize', None)
+        data.setdefault('cursorsize', None)
+    
+        if None in data.values():
+            raise serializers.ValidationError("Faltan datos para actualizar las configuraciones")
+        return data

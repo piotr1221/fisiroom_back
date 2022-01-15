@@ -38,3 +38,18 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = serializers.UserLoginSerializer(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['PUT'], url_path='me/config')
+    def config(self, request):
+        print(request.auth)
+        serializer_class = serializers.UserConfigSerializer
+        queryset = serializer_class.Meta.model.objects
+        queryset = self.queryset.filter()
+        user = get_object_or_404(queryset, auth_token = request.auth)
+        serializer = serializers.UserConfigSerializer(user, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'Modificado'}, status = status.HTTP_202_ACCEPTED)
+        return Response({
+            'message':'Errores en la actualizacion',
+            'errors': serializer.errors}, status = status.HTTP_400_BAD_REQUEST)
