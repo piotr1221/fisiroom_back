@@ -91,7 +91,7 @@ DATABASES = {
         'PORT': '3306',
         'NAME': 'fisi_room_db',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'unmsm',
         }
   }
 
