@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.config import settings
+from django.config.urls.static import static
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -29,4 +31,4 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('courses/', include('courses.urls')),
     path('classroom/', include('classroom.urls'))
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

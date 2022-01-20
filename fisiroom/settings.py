@@ -1,5 +1,9 @@
 import pymysql
 import os
+import django_heroku
+import dj_database_url
+from decouple import config
+
 """
 Django settings for fisiroom project.
 
@@ -25,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1owa7ry7^*l&42eq85e%j(ja+e)39*0f34g%^e(hknvqlt3_fz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -57,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'fisiroom.urls'
@@ -85,14 +90,9 @@ WSGI_APPLICATION = 'fisiroom.wsgi.application'
 
 pymysql.install_as_MySQLdb()
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'NAME': 'fisi_room_db',
-        'USER': 'root',
-        'PASSWORD': 'unmsm',
-        }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
   }
 
 
@@ -148,5 +148,12 @@ REST_FRAMEWORK = {
     ],
 }
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'fisi-room-bucket'
+BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+#GS_BUCKET_NAME = 'fisi-room-bucket'
+
+django_heroku.settings(locals())
