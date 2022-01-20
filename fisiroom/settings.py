@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'fisiroom.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-pymysql.install_as_MySQLdb()
+#pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
