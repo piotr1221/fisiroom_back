@@ -2,6 +2,7 @@ import os
 import django_heroku
 import dj_database_url
 from decouple import config
+#import pymysql
 
 """
 Django settings for fisiroom project.
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
     'corsheaders',
     'users',
     'courses',
@@ -92,6 +94,19 @@ DATABASES = {
         default=config('DATABASE_URL')
     )
   }
+
+# pymysql.install_as_MySQLdb()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'HOST': '35.184.210.117',
+#         'PORT': '3306',
+#         'NAME': 'fisi_room_db',
+#         'USER': 'fisi-room-user',
+#         'PASSWORD': 'fisi-room-user',
+#         }
+#   }
+
 
 
 # Password validation
@@ -146,7 +161,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
