@@ -5,7 +5,6 @@ import uuid
 # Create your models here.
 
 def course_storage_path(instance, filename):
-    filename = 'portada.jpg'
     id = len(Course.objects.all()) + 1
     return f'courses/{id}/{filename}'
 class Course(models.Model):

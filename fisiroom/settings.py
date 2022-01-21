@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'fisiroom.urls'
@@ -99,11 +99,11 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'HOST': '35.184.210.117',
+#         'HOST': 'localhost',
 #         'PORT': '3306',
 #         'NAME': 'fisi_room_db',
-#         'USER': 'fisi-room-user',
-#         'PASSWORD': 'fisi-room-user',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
 #         }
 #   }
 
@@ -161,11 +161,20 @@ REST_FRAMEWORK = {
     ],
 }
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-#GS_BUCKET_NAME = 'fisi-room-bucket'
+from google.oauth2 import service_account
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'credentials.json')
+)
+
+DEFAULT_FILE_STORAGE = 'fisiroom.gcloud.GoogleCloudMediaFileStorage'
+GS_PROJECT_ID = 'fisi-room-budget'
+GS_BUCKET_NAME = 'fisi-room-bucket'
+MEDIA_ROOT = 'media/'
+UPLOAD_ROOT = 'media/uploads/'
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 
 django_heroku.settings(locals())
