@@ -16,7 +16,6 @@ from courses.models import Course
 from . import serializers
 from django.conf import settings
 
-import classroom
 
 app_name = 'classroom'
 
@@ -75,12 +74,21 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['GET'], url_path='(?P<assign_id>[^/.]+)/homeworks')
-    def homeworks(self, req, course_id=None, assign_id=None):
+    @action(detail=True, methods=['GET'], url_path='homeworks')
+    def homeworks(self, req, pk=None, course_id=None):
         assignment_queryset = self.queryset.filter()
-        classroom_assignment = get_object_or_404(assignment_queryset, pk=assign_id)
+        classroom_assignment = get_object_or_404(assignment_queryset, pk=pk)
         homework_queryset = classroom_assignment.homeworks
         serializer = serializers.ClassroomHomeworkSerializer(homework_queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['GET'], url_path='homeworks/(?P<student_id>[^/.]+)')
+    def student_homework(self, req, pk=None, course_id=None, student_id=None):
+        assignment_queryset = self.queryset.filter()
+        classroom_assignment = get_object_or_404(assignment_queryset, pk=pk)
+        homework_queryset = classroom_assignment.homeworks
+        classroom_homework = get_object_or_404(homework_queryset, student=student_id)
+        serializer = serializers.ClassroomHomeworkSerializer(classroom_homework)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -180,7 +188,7 @@ class InvitationAPIView(APIView):
     #     # msg.attach_alternative(html_content, "text/html")
     #     msg.send()
     #     return HttpResponseRedirect(redirect_to='https://google.com')
-
+    
     def post(self, request, course_id):
         subject = "Correo de Invitación"
         base_link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/'
