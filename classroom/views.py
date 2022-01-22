@@ -96,13 +96,13 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'], url_path='(?P<course_id>[^/.]+)/enroll')
     def enroll(self, req, course_id=None):
         queryset = self.queryset.filter()
-        classroom_course = get_object_or_404(queryset, pk=course_id)
+        classroom_course = get_object_or_404(queryset, pk=course_id) 
         classroom_course.enrolled.add(req.user)
-        serializer = self.serializer_class(classroom_course, data=req.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            classroom_course.save()
+            return HttpResponseRedirect(reverse('classroom:classroom-detail', kwargs={'pk': course_id}))
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ClassroomPostViewSet(viewsets.ModelViewSet):
@@ -176,9 +176,7 @@ class InvitationAPIView(APIView):
     def get(self, request, course_id):
         subject = "Correo de Invitación"
         base_link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/'
-        email_to = 'guilyamon_ky@hotmail.com'
+        email_to = request.user.email
         msg = EmailMultiAlternatives(subject, base_link + 'enroll/', settings.EMAIL_HOST_USER, [email_to])
         msg.send()
         return Response({}, status=status.HTTP_200_OK)
-        return HttpResponseRedirect(reverse('classroom:classroom-detail', kwargs={'pk': course_id}))
-    
