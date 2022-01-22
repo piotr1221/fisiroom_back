@@ -1,6 +1,11 @@
-from decimal import Context
-from os import stat
-from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
+from django.template.loader import render_to_string
+from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
@@ -9,7 +14,11 @@ from classroom.models import Assignment
 
 from courses.models import Course
 from . import serializers
+from django.conf import settings
 
+import classroom
+
+app_name = 'classroom'
 
 class ClassroomHomeworkViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomHomeworkSerializer
@@ -67,7 +76,6 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClassroomCourseSerializer
     queryset = serializer_class.Meta.model.objects
@@ -83,6 +91,17 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(Q(owner=req.user) | Q(id__in=req.user.enrolled_courses.all()))
         classroom_course = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(classroom_course)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['POST'], url_path='(?P<course_id>[^/.]+)/enroll')
+    def enroll(self, req, course_id=None):
+        queryset = self.queryset.filter()
+        classroom_course = get_object_or_404(queryset, pk=course_id)
+        classroom_course.enrolled.add(req.user)
+        serializer = self.serializer_class(classroom_course, data=req.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -126,3 +145,40 @@ class ClassroomPostViewSet(viewsets.ModelViewSet):
             super().destroy(request)
             return Response({'message': 'Post borrado exitosamente'}, status = status.HTTP_200_OK)
         return Response({'message': 'No existe un post con esos datos'}, status = status.HTTP_400_BAD_REQUEST)
+
+
+class InvitationAPIView(APIView):
+    http_method_names = ['get', 'post']
+
+    # def get(self, request, course_id=None):
+    #     subject = "Correo de Invitación"
+    #     link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/invitate/'
+    #     # html_content = f"""
+    #     # <!DOCTYPE html>
+    #     # <html>
+    #     # <body>
+
+    #     # <h1>Título</h1>
+    #     # <button href="{link}">Clickear</button>
+
+    #     # </body>
+    #     # </html>
+    #     # """
+
+    #     # html_content = render_to_string('./email.html', {'link': link})
+    #     email_from = 'takatoguild@gmail.com',
+    #     email_to = 'guilyamon_ky@hotmail.com'
+    #     msg = EmailMultiAlternatives(subject, link, email_from, [email_to])
+    #     # msg.attach_alternative(html_content, "text/html")
+    #     msg.send()
+    #     return HttpResponseRedirect(redirect_to='https://google.com')
+
+    def get(self, request, course_id):
+        subject = "Correo de Invitación"
+        base_link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/'
+        email_to = 'guilyamon_ky@hotmail.com'
+        msg = EmailMultiAlternatives(subject, base_link + 'enroll/', settings.EMAIL_HOST_USER, [email_to])
+        msg.send()
+        return Response({}, status=status.HTTP_200_OK)
+        return HttpResponseRedirect(reverse('classroom:classroom-detail', kwargs={'pk': course_id}))
+    
