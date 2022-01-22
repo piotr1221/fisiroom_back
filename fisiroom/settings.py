@@ -34,8 +34,8 @@ DEBUG = False
 # EMAIL
 EMAIL_HOST = 'smtp.googlemail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'takatoguild@gmail.com'
-EMAIL_HOST_PASSWORD = 'avedelperu123456'
+EMAIL_HOST_USER = 'fisiroom@gmail.com'
+EMAIL_HOST_PASSWORD = 'aea123456'
 EMAIL_USE_TLS = True
 
 ALLOWED_HOSTS = ['*']
