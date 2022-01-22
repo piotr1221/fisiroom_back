@@ -191,7 +191,7 @@ class InvitationAPIView(APIView):
     
     def post(self, request, course_id):
         subject = "Correo de Invitación"
-        base_link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/'
+        base_link = 'https://fisiroom.netlify.app/curso/' + str(course_id) + '/unirse'
         email_to = request.data['email']
         msg = EmailMultiAlternatives(subject, base_link + 'enroll/', settings.EMAIL_HOST_USER, [email_to])
         msg.send()
