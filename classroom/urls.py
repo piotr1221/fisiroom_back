@@ -1,3 +1,4 @@
+from email.mime import base
 from django.urls import path, include
 
 from rest_framework.routers import SimpleRouter
@@ -19,5 +20,6 @@ urlpatterns = [
     path('', include(main_router.urls)),
     path('<int:course_id>/', include(post_router.urls)),
     path('<int:course_id>/', include(assignment_router.urls)),
-    path('<int:course_id>/assignments/<int:assign_id>/', include(homework_router.urls))
+    path('<int:course_id>/assignments/<int:assign_id>/', include(homework_router.urls)),
+    path('<int:course_id>/invitate/', views.InvitationAPIView.as_view(), name='invitation')
 ]       

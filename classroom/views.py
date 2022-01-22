@@ -1,5 +1,8 @@
-from decimal import Context
-from os import stat
+from rest_framework.decorators import action
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,6 +12,7 @@ from classroom.models import Assignment
 
 from courses.models import Course
 from . import serializers
+from django.conf import settings
 
 
 class ClassroomHomeworkViewSet(viewsets.ModelViewSet):
@@ -126,3 +130,29 @@ class ClassroomPostViewSet(viewsets.ModelViewSet):
             super().destroy(request)
             return Response({'message': 'Post borrado exitosamente'}, status = status.HTTP_200_OK)
         return Response({'message': 'No existe un post con esos datos'}, status = status.HTTP_400_BAD_REQUEST)
+
+
+class InvitationAPIView(APIView):
+    http_method_names = ['get', 'post']
+
+    def get(self, request, course_id=None):
+        subject = "Correo de Invitación"
+        link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/invitate/'
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <body>
+
+        <h1>Título</h1>
+        <button href="{link}">Clickear</button>
+
+        </body>
+        </html>
+        """
+        email_from = 'takatoguild@gmail.com',
+        email_to = 'guilyamon_ky@hotmail.com'
+        msg = EmailMultiAlternatives(subject, "aea", settings.EMAIL_HOST_USER, [email_to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        return HttpResponseRedirect(redirect_to='https://google.com')
+    
