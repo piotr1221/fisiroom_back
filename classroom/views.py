@@ -190,9 +190,27 @@ class InvitationAPIView(APIView):
     #     return HttpResponseRedirect(redirect_to='https://google.com')
     
     def post(self, request, course_id):
+        queryset_courses = Course.objects.filter()
+        course = get_object_or_404(queryset_courses, pk=course_id)
+
         subject = "Correo de Invitación"
         base_link = 'https://fisiroom.netlify.app/curso/' + str(course_id) + '/unirse'
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <body>
+
+        <h1>¡Bienvenido al curso: {course.title}!</h1>
+        <h2>Profesor: <h3>{course.owner.first_name} {course.owner.last_name}</h3></h2> 
+        <a>Haz click</a>
+        <a href="{base_link}">aquí</a>
+        <a>para unirte.</a>
+
+        </body>
+        </html>
+        """
         email_to = request.data['email']
-        msg = EmailMultiAlternatives(subject, base_link, settings.EMAIL_HOST_USER, [email_to])
+        msg = EmailMultiAlternatives(subject, base_link + 'enroll/', settings.EMAIL_HOST_USER, [email_to])
+        msg.attach_alternative(html_content, "text/html")
         msg.send()
         return Response({}, status=status.HTTP_200_OK)
