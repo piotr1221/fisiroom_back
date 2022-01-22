@@ -32,10 +32,11 @@ SECRET_KEY = 'django-insecure-1owa7ry7^*l&42eq85e%j(ja+e)39*0f34g%^e(hknvqlt3_fz
 DEBUG = False
 
 # EMAIL
-EMAIL_HOST = 'stmp.googlemail.com'
+EMAIL_HOST = 'smtp.googlemail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'fisiroom@gmail.com'
-EMAIL_HOST_PASSWORD = 'aea123456'
+EMAIL_HOST_USER = 'takatoguild@gmail.com'
+EMAIL_HOST_PASSWORD = 'avedelperu123456'
+EMAIL_USE_TLS = True
 
 ALLOWED_HOSTS = ['*']
 
