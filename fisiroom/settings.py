@@ -91,7 +91,7 @@ DATABASES = {
         'PORT': '3306',
         'NAME': 'fisi_room_db',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'unmsm',
         }
   }
 
@@ -133,13 +133,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# Dirección de correos
-EMAIL_HOST = 'smtp.googlemail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'takatoguild@gmail.com'
-EMAIL_HOST_PASSWORD = 'avedelperu123456'
-EMAIL_USE_TLS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

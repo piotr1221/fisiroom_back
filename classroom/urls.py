@@ -4,6 +4,8 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from . import views
 
+app_name='classroom'
+
 main_router = SimpleRouter()
 main_router.register(r'', views.ClassroomCourseViewSet, basename='classroom')
 
@@ -21,5 +23,5 @@ urlpatterns = [
     path('<int:course_id>/', include(post_router.urls)),
     path('<int:course_id>/', include(assignment_router.urls)),
     path('<int:course_id>/assignments/<int:assign_id>/', include(homework_router.urls)),
-    path('<int:course_id>/invitate/', views.InvitationAPIView.as_view(), name='invitation')
+    path('<int:course_id>/invite/', views.InvitationAPIView.as_view(), name='invitation')
 ]       
