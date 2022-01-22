@@ -31,6 +31,12 @@ SECRET_KEY = 'django-insecure-1owa7ry7^*l&42eq85e%j(ja+e)39*0f34g%^e(hknvqlt3_fz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+# EMAIL
+EMAIL_HOST = 'stmp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'fisiroom@gmail.com'
+EMAIL_HOST_PASSWORD = 'aea123456'
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
