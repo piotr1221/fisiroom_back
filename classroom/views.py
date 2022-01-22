@@ -104,7 +104,7 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, req, pk=None):
-        queryset = self.queryset.filter(Q(owner=req.user) | Q(id__in=req.user.enrolled_courses.all()))
+        queryset = self.queryset.filter()
         classroom_course = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(classroom_course)
         return Response(serializer.data, status=status.HTTP_200_OK)
