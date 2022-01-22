@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from django.db.models import Q
-from classroom.models import Assignment
+from classroom.models import Assignment, Homework
 
 from courses.models import Course
 from . import serializers
@@ -66,7 +66,7 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
     
     def retrieve(self, req, pk=None, course_id=None):
         queryset = self.queryset.filter()
-        classroom_assignment = get_object_or_404(queryset, pk=pk, course=course_id)
+        classroom_assignment = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(classroom_assignment)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -75,16 +75,13 @@ class ClassroomAssignmentViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['POST'], url_path='(?P<course_id>[^/.]+)/enroll')
-    def homeworks(self, req, course_id=None):
-        queryset = self.queryset.filter()
-        classroom_course = get_object_or_404(queryset, pk=course_id) 
-        classroom_course.enrolled.add(req.user)
-        try:
-            classroom_course.save()
-            return HttpResponseRedirect(reverse('classroom:classroom-detail', kwargs={'pk': course_id}))
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+    @action(detail=False, methods=['GET'], url_path='(?P<assign_id>[^/.]+)/homeworks')
+    def homeworks(self, req, course_id=None, assign_id=None):
+        assignment_queryset = self.queryset.filter()
+        classroom_assignment = get_object_or_404(assignment_queryset, pk=assign_id)
+        homework_queryset = classroom_assignment.homeworks
+        serializer = serializers.ClassroomHomeworkSerializer(homework_queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ClassroomCourseViewSet(viewsets.ModelViewSet):
@@ -104,16 +101,16 @@ class ClassroomCourseViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(classroom_course)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # @action(detail=False, methods=['POST'], url_path='(?P<course_id>[^/.]+)/enroll')
-    # def enroll(self, req, course_id=None):
-    #     queryset = self.queryset.filter()
-    #     classroom_course = get_object_or_404(queryset, pk=course_id) 
-    #     classroom_course.enrolled.add(req.user)
-    #     try:
-    #         classroom_course.save()
-    #         return HttpResponseRedirect(reverse('classroom:classroom-detail', kwargs={'pk': course_id}))
-    #     except:
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
+    @action(detail=False, methods=['POST'], url_path='(?P<course_id>[^/.]+)/enroll')
+    def enroll(self, req, course_id=None):
+        queryset = self.queryset.filter()
+        classroom_course = get_object_or_404(queryset, pk=course_id) 
+        classroom_course.enrolled.add(req.user)
+        try:
+            classroom_course.save()
+            return HttpResponseRedirect(reverse('classroom:classroom-detail', kwargs={'pk': course_id}))
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ClassroomPostViewSet(viewsets.ModelViewSet):
