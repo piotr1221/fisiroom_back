@@ -10,6 +10,8 @@ def course_storage_path(instance, filename):
     return f'courses/{id}/{filename}'
 class Course(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    # Es recomendable colocar los atributos constantes antes de los campos de la clase
     image = models.FileField(upload_to=course_storage_path, null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=300, null=True, blank=True)
