@@ -165,7 +165,7 @@ class ClassroomPostViewSet(viewsets.ModelViewSet):
 
 class InvitationAPIView(APIView):
     http_method_names = ['get', 'post']
-
+    ### Es necesario remover este bloque de codigo comentado para mejorar la legibilidad y la mantenibilidad
     # def get(self, request, course_id=None):
     #     subject = "Correo de Invitación"
     #     link = request.META['HTTP_HOST'] + '/classroom/' + str(course_id) + '/invitate/'
