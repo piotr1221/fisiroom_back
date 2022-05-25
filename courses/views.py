@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404, redirect
 from . import serializers
+#Aqui se debe importar la libreria del decorator desde rest_framework
+
 # Create your views here.
 
 class CourseCreatedViewSet(viewsets.ModelViewSet):
@@ -13,7 +15,8 @@ class CourseCreatedViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(owner=req.user)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
+    # Es necesario colocar un decorator action aqui para poder manejar la url y colocar una nueva con un simple codigo.
     def retrieve(self, req, pk=None):
         queryset = self.queryset.filter(owner=req.user)
         course = get_object_or_404(queryset, pk=pk)
@@ -34,7 +37,7 @@ class CourseEnrolledViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(enrolled=req.user)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
     def retrieve(self, req, pk=None):
         queryset = self.queryset.filter(enrolled=req.user)
         course = get_object_or_404(queryset, pk=pk)
