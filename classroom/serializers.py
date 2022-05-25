@@ -86,14 +86,4 @@ class ClassroomCourseSerializer(CourseCardSerializer):
         data.setdefault('day', None)
         data.setdefault('time_start', None)
         data.setdefault('time_end', None)
-
-        if None in data.values():
-            return serializers.ValidationError("Faltan datos para el registro")
-
-        if data['day'] not in [str(i) for i in range(1, 7+1)]:
-            return serializers.ValidationError("Dia fuera de rango")
-
-        if not data['time_start'] < data['time_end']:
-            return serializers.ValidationError("Horario inconsistente")
-
         return data
