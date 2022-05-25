@@ -3,9 +3,18 @@ from django.core import validators
 from users.models import User
 from courses.models import Course
 
+# Problema de consistencia con respecto a la id para la entidad de la base de datos y 
+# la id para guardar los archivos relacionados en el bucket
+
+# Problemas al guiarse la futura id de un post para guardarla dentro del bucket de imagenes
+# Al ser calculada mediante la longitud de las instancias, ante posibles eliminaciones de registros de la tabla Post
+# causaria problemas de conflicto de llaves de los post para el guardado de archivos en el bucket 
+
 def post_storage_path(instance, filename):
     id = len(Post.objects.filter(course=instance.course)) + 1
     return f'{instance.course.get_storage_path()}/posts/{id}/{filename}'
+
+################################################################################################
 
 class Post(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='posts')
