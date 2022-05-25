@@ -82,6 +82,8 @@ class ClassroomCourseSerializer(CourseCardSerializer):
         return super(ClassroomCourseSerializer, self).create(data)
 
     def validate(self, data):
+        #Agregar métodos de validación para todos
+        #los campos procesados en la solicitud.
         data.setdefault('title', None)
         data.setdefault('day', None)
         data.setdefault('time_start', None)
